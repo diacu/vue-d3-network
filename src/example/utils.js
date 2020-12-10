@@ -90,7 +90,7 @@ export const makeRandomLinks = (nodes, maxLinks) => {
 
 // random node name
 const newNodeName = () => {
-  return Math.random().toString(36).substring(7)
+  return (Math.random() < 0.5) ? Math.random().toString(36).substring(7) : [Math.random().toString(36).substring(3), Math.random().toString(36).substring(5)]
 }
 
 // node formatter

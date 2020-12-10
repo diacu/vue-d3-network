@@ -38,7 +38,7 @@
           :x='node.x - getNodeSize(node, "width") / 2'
           :y='node.y - getNodeSize(node, "height") / 2'
           :style='nodeStyle(node)'
-          :title="node.name"
+          :title="Array.isArray(node.name) ? node.name.join(' ') : node.name"
           :class='nodeClass(node,["node-svg"])'
           v-html='svgIcon(node).data'
           v-bind='node._svgAttrs'
@@ -55,7 +55,7 @@
         :cx="node.x"
         :cy="node.y"
         :style='nodeStyle(node)'
-        :title="node.name"
+        :title="Array.isArray(node.name) ? node.name.join(' ') : node.name"
         :class="nodeClass(node)"
         v-bind='node._svgAttrs'
         )
@@ -73,7 +73,12 @@
         :font-size="fontSize"
         :class='(node._labelClass) ? node._labelClass : ""'
         :stroke-width='fontSize / 8'
-      ) {{ node.name }}
+      )
+        template(v-if='Array.isArray(node.name)')
+          tspan(v-for="(nodeNameLine, nodeNameKey) in node.name"
+            :dy='nodeNameKey === 0 ? 0 : fontSize'
+            :x='node.x + (getNodeSize(node) / 2) + (fontSize / 2)') {{ nodeNameLine }}
+        template(v-else) {{ node.name }}
 </template>
 <script>
 import svgExport from '../lib/js/svgExport.js'
